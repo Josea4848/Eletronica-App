@@ -1,0 +1,12 @@
+body {
+  background-color: black;
+}
+
+#circuito {
+  border: 5px solid green;
+  height: 50vh;
+}
+
+form {
+  color: white;
+}
