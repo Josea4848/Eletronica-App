@@ -45,11 +45,17 @@ button.addEventListener("click", () => {
   let ie = calcula_Ie(ib, ic);
   let tensao = calcula_Vce(parseFloat(v_receptor.value), parseFloat(r_receptor.value), ic);
   
+  ic_current.style.color = "white";
+
   ib_current.textContent = "Ib: " + ib*Math.pow(10, 6) + "µA";
   ic_current.textContent = "Ic: " + ic*Math.pow(10, 3) + "mA";
   ie_current.textContent = "Ie: " + ie*Math.pow(10,3) + "mA";
-  tensao_ce.textContent = "Vce: " + tensao + "V";
+  tensao_ce.textContent = "Vce: " + tensao.toFixed(2) + "V";
 
+
+  if(ic > v_receptor.value/r_receptor.value) {
+    ic_current.style.color = "red";
+  }
 })
 
   
