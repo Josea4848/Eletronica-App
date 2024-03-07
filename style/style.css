@@ -5,8 +5,10 @@ body {
 }
 
 #circuito {
-  border: 5px solid green;
+  border: 2px solid green;
   height: 35vh;
+  background-image: url("../images/Rb.jpg");
+  background-size: cover;
 }
 
 form {
@@ -23,24 +25,34 @@ input {
   border: 0;
   border-bottom: 1px solid white;
   color: white;
-  width: 75vw;
+  width: 100%;
 }
 
-button {
+#button {
   margin-top: 20px;
   background-color: green;
   border: none;
   width: 75vw;
   border-radius: 5px;
-  position: relative;
   height: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bolder;
+  width: 100%;
 }
 
-button:hover {
+#button:hover {
   background-color: rgb(0, 45, 0);
 }
 
 form  p {
   position: relative;
   left: 0px;
+}
+
+select {
+  background-color: black;
+  color: white;
+  border-radius: 5px;
 }

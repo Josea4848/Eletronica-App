@@ -24,7 +24,7 @@ let r_base = document.getElementById("r_base");
 let r_receptor = document.getElementById("r_receptor");
 let gain = document.getElementById("gain");
 let aprox = document.getElementById("aproximacao");
-let button = document.getElementById("calcula");
+let button = document.getElementById("button");
 
 //Saidas
 let ib_current = document.getElementById("base");
@@ -48,3 +48,4 @@ button.addEventListener("click", () => {
   ie_current.textContent = "Ie: " + ie*Math.pow(10,3) + "mA";
 })
 
+  
