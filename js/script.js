@@ -17,11 +17,34 @@ function calcula_Ie(ib_current, ic_current) {
   return ib_current + ic_current;
 }
 
+//Entradas
 let v_base = document.getElementById("v_base");
 let v_receptor = document.getElementById("v_receptor");
 let r_base = document.getElementById("r_base");
 let r_receptor = document.getElementById("r_receptor");
+let gain = document.getElementById("gain");
+let aprox = document.getElementById("aproximacao");
+let button = document.getElementById("calcula");
 
+//Saidas
+let ib_current = document.getElementById("base");
+let ic_current = document.getElementById("receptor");
+let ie_current = document.getElementById("emissor");
 
+//Inicialização de valores
+v_base.value = 0;
+v_receptor.value = 0;
+r_base.value = 0;
+r_receptor.value = 0;
+gain.value = 100;
 
+button.addEventListener("click", () => {
+  let ib = calcula_Ib(parseFloat(r_base.value), parseFloat(v_base.value), parseFloat(parseFloat(aprox.value)));
+  let ic = calcula_Ic(ib, parseFloat(gain.value));
+  let ie = calcula_Ie(ib, ic);
+
+  ib_current.textContent = "Ib: " + ib*Math.pow(10, 6) + "µA";
+  ic_current.textContent = "Ic: " + ic*Math.pow(10, 3) + "mA";
+  ie_current.textContent = "Ie: " + ie*Math.pow(10,3) + "mA";
+})
 
