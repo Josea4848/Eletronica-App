@@ -46,6 +46,7 @@ button.addEventListener("click", () => {
   let tensao = calcula_Vce(parseFloat(v_receptor.value), parseFloat(r_receptor.value), ic);
   
   ic_current.style.color = "white";
+  tensao_ce.style.color = "black";
 
   ib_current.textContent = "Ib: " + ib*Math.pow(10, 6).toFixed(2) + "µA";
   ic_current.textContent = "Ic: " + ic*Math.pow(10, 3).toFixed(2) + "mA";
@@ -55,6 +56,10 @@ button.addEventListener("click", () => {
 
   if(ic > v_receptor.value/r_receptor.value) {
     ic_current.style.color = "red";
+  }
+
+  if(tensao < 0) {
+    tensao_ce.style.color = "red";
   }
 })
 
