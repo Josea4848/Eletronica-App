@@ -30,6 +30,7 @@ let button = document.getElementById("button");
 let ib_current = document.getElementById("base");
 let ic_current = document.getElementById("receptor");
 let ie_current = document.getElementById("emissor");
+let tensao_ce = document.getElementById("tensao");
 
 //Inicialização de valores
 v_base.value = 0;
@@ -42,10 +43,13 @@ button.addEventListener("click", () => {
   let ib = calcula_Ib(parseFloat(r_base.value), parseFloat(v_base.value), parseFloat(parseFloat(aprox.value)));
   let ic = calcula_Ic(ib, parseFloat(gain.value));
   let ie = calcula_Ie(ib, ic);
-
+  let tensao = calcula_Vce(parseFloat(v_receptor.value), parseFloat(r_receptor.value), ic);
+  
   ib_current.textContent = "Ib: " + ib*Math.pow(10, 6) + "µA";
   ic_current.textContent = "Ic: " + ic*Math.pow(10, 3) + "mA";
   ie_current.textContent = "Ie: " + ie*Math.pow(10,3) + "mA";
+  tensao_ce.textContent = "Vce: " + tensao + "V";
+
 })
 
   
