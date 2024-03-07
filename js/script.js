@@ -47,9 +47,9 @@ button.addEventListener("click", () => {
   
   ic_current.style.color = "white";
 
-  ib_current.textContent = "Ib: " + ib*Math.pow(10, 6) + "µA";
-  ic_current.textContent = "Ic: " + ic*Math.pow(10, 3) + "mA";
-  ie_current.textContent = "Ie: " + ie*Math.pow(10,3) + "mA";
+  ib_current.textContent = "Ib: " + ib*Math.pow(10, 6).toFixed(2) + "µA";
+  ic_current.textContent = "Ic: " + ic*Math.pow(10, 3).toFixed(2) + "mA";
+  ie_current.textContent = "Ie: " + ie*Math.pow(10,3).toFixed(2) + "mA";
   tensao_ce.textContent = "Vce: " + tensao.toFixed(2) + "V";
 
 
