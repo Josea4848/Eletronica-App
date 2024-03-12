@@ -33,10 +33,10 @@ let ie_current = document.getElementById("emissor");
 let tensao_ce = document.getElementById("tensao");
 
 //Inicialização de valores
-v_base.value = 0;
-v_receptor.value = 0;
-r_base.value = 0;
-r_receptor.value = 0;
+v_base.value = 5;
+v_receptor.value = 15;
+r_base.value = 1000;
+r_receptor.value = 10000;
 gain.value = 100;
 
 button.addEventListener("click", () => {
@@ -62,3 +62,43 @@ button.addEventListener("click", () => {
 })
 
   
+//Gráficos
+
+const rand = (x) => (v_receptor.value - x)*1000/r_receptor.value;
+
+var x = [0, v_receptor.value];
+
+const new_data = (trace) => Object.assign(trace, {y: x.map(rand)});
+
+// add random data to three line traces
+var data = [
+  {mode:'lines', line: {color: "#b55400"}}, 
+].map(new_data);
+
+var layout = {
+  title: 'Gráfico V x I',
+  uirevision:'true',
+  xaxis: {autorange: true},
+  yaxis: {autorange: true}
+};
+
+Plotly.react(graphDiv, data, layout);
+
+var myPlot = document.getElementById('graphDiv');
+
+var cnt = 0;
+var interval = setInterval(function() {
+  data = data.map(new_data);
+
+  // user interation will mutate layout and set autorange to false
+  // so we need to reset it to true
+  layout.xaxis.autorange = true;
+  layout.yaxis.autorange = true;
+  
+  // not changing uirevision will ensure that user interactions are unchanged
+  // layout.uirevision = rand();
+  
+  Plotly.react(graphDiv, data, layout);
+  if(cnt === 100) clearInterval(interval);
+}, 2500);
+
