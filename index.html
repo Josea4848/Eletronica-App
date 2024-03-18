@@ -13,6 +13,13 @@
 </head>
 <body>
   <main>
+    <p>Posição do resistor</p>
+    <select name="posicao do resistor" id="pos_res">
+      <option value="base">Base</option>
+      <option value="emissor">Emissor</option>
+      <option value="e_divisor">Emissor com divisor de tensão</option>
+    </select>
+    <hr>  
     <div id="circuito"></div>
     <!-- Resultado -->
     <div id="resultado">
@@ -29,9 +36,21 @@
           <option value="0.7" selected>Segunda aproximação (Silício)</option>
         </select>
 
-        <!-- Resistor da base -->
-        <p>Rb - Resistor da base (Ω)</p>
+        <!--Resistor da base -->
+        <p id="r_base_out">Rb - Resistor da base (Ω)</p>
         <input type="number" id="r_base"> 
+
+        <!--(3) Resistor da base 1 -->
+        <p id="r_base1_out">Rb - Resistor da base 1 (Ω)</p>
+        <input type="number" id="r_base1"> 
+
+        <!--(3) Resistor da base 2 -->
+        <p id="r_base2_out">Rb - Resistor da base 2 (Ω)</p>
+        <input type="number" id="r_base2"> 
+
+        <!-- Resistor da Emissor -->
+        <p id="r_emissor_out">Rb - Resistor da emissor (Ω)</p>
+        <input type="number" id="r_emissor"> 
 
         <!-- Resistor do receptor -->
         <p>Rc - Resistor do coletor (Ω)</p>
