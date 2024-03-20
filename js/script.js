@@ -33,6 +33,9 @@ let res_option = document.getElementById("pos_res");
 let r_base1 = document.getElementById("r_base1");
 let r_base2 = document.getElementById("r_base2");
 let r_emissor = document.getElementById("r_emissor");
+let tensao;
+//imagem
+let circuit_image = document.getElementById("circuito");
 
 //Saidas
 let ib_current = document.getElementById("base");
@@ -71,6 +74,7 @@ res_option.addEventListener("change", () => {
     saida_r.hidden = false;
     saida_r1.hidden = true;
     saida_r2.hidden = true;
+    circuit_image.style.backgroundImage =  'url("../images/Rb.jpg")';
   } 
   //resistor no emissor
   else if (res_option.value == "emissor") {
@@ -82,6 +86,7 @@ res_option.addEventListener("change", () => {
     saida_r.hidden = true;
     saida_r1.hidden = true;
     saida_r2.hidden = true;
+    circuit_image.style.backgroundImage =  'url("../images/remissor.jpg")';
   } 
   //resistor na base e no emissor 
   else {
@@ -93,6 +98,7 @@ res_option.addEventListener("change", () => {
     saida_r.hidden = true;
     saida_r1.hidden = false;
     saida_r2.hidden = false;
+    circuit_image.style.backgroundImage =  'url("../images/divisor.jpg")';
   }
 });
 
@@ -101,8 +107,8 @@ button.addEventListener("click", () => {
     let ib = calcula_Ib(parseFloat(r_base.value), parseFloat(v_base.value), parseFloat(parseFloat(aprox.value)));
     let ic = calcula_Ic(ib, parseFloat(gain.value));
     let ie = calcula_Ie(ib, ic);
-    let tensao = calcula_Vce(parseFloat(v_receptor.value), parseFloat(r_receptor.value), ic);
-    
+    tensao = calcula_Vce(parseFloat(v_receptor.value), parseFloat(r_receptor.value), ic);
+    r_emissor.value = 0;
     ic_current.style.color = "white";
     tensao_ce.style.color = "white";
 
@@ -112,10 +118,12 @@ button.addEventListener("click", () => {
     tensao_ce.textContent = "Vce: " + tensao.toFixed(2) + "V";
     alert(ic + " > " + v_receptor.value/r_receptor.value)
     if(ic > v_receptor.value/r_receptor.value) {
-      
+      ic_current.textContent += " (Saturação)";
       ic_current.style.color = "red";
       tensao_ce.style.color = "red";
     }
+
+    mostraGraph(tensao, ic);
   }
 
   else if (res_option.value == "e_divisor") {
@@ -135,6 +143,7 @@ button.addEventListener("click", () => {
     if(ic > 1000*v_receptor.value/(r_receptor.value+r_emissor.value)) {
       ic_current.style.color = "red";
       tensao_ce.style.color = "red";
+      ic_current.textContent += " (Saturação)";
     }
     
   } 
@@ -157,48 +166,67 @@ button.addEventListener("click", () => {
     if(ic > 1000*v_receptor.value/(r_receptor.value+r_emissor.value)) {
       ic_current.style.color = "red";
       tensao_ce.style.color = "red";
+      ic_current.textContent += " (Saturação)";
     }
 
   }});
 
   
-//Gráficos
 
-const rand = (x) => (v_receptor.value - x)*1000/r_receptor.value;
 
-var x = [0, v_receptor.value];
+function mostraGraph(vce, ic) {
+  //Gráficos
+calculaI = (tensao) => (Number(v_receptor.value) - tensao)/(Number(r_receptor.value)+Number(r_emissor.value))*1000;
 
-const new_data = (trace) => Object.assign(trace, {y: x.map(rand)});
-
-// add random data to three line traces
-var data = [
-  {mode:'lines', line: {color: "#b55400"}}, 
-].map(new_data);
-
-var layout = {
-  title: 'Gráfico V x I',
-  uirevision:'true',
-  xaxis: {autorange: true},
-  yaxis: {autorange: true}
+// Valores de exemplo para x e y
+const valoresX = [0, Number(v_receptor.value)];
+const valoresY = valoresX.map(calculaI);
+  // Configuração dos dados
+const data = {
+  labels: valoresX,
+  datasets: [{
+      label: 'V(V) x I(mA)',
+      data: valoresY,
+      borderColor: 'rgba(75, 192, 192, 1)',
+      borderWidth: 1,
+      fill: false
+  }, 
+  {
+    label: 'Ponto Q',
+    data: [{ x: vce, y: ic*1000 }],
+    backgroundColor: 'red',
+    pointRadius: 5,
+    pointHoverRadius: 7,
+    type: 'scatter'
+}]
 };
 
-Plotly.react(graphDiv, data, layout);
+// Configuração do gráfico
+const config = {
+  type: 'line',
+  data: data,
+  options: {
+      scales: {
+          x: {
+              type: 'linear',
+              position: 'bottom', 
+              ticks: {
+                stepSize: 1, // Define o intervalo entre os valores do eixo x
+                precision: 0 // Remove a precisão decimal dos valores do eixo x
+            }
+          },
+          y: {
+              type: 'linear',
+              position: 'left'
+          }
+      }
+  }
+};
 
-var myPlot = document.getElementById('graphDiv');
-
-var cnt = 0;
-var interval = setInterval(function() {
-  data = data.map(new_data);
-
-  // user interation will mutate layout and set autorange to false
-  // so we need to reset it to true
-  layout.xaxis.autorange = true;
-  layout.yaxis.autorange = true;
-  
-  // not changing uirevision will ensure that user interactions are unchanged
-  // layout.uirevision = rand();
-  
-  Plotly.react(graphDiv, data, layout);
-  if(cnt === 100) clearInterval(interval);
-}, 2500);
+// Criando o gráfico
+var myChart = new Chart(
+  document.getElementById('myChart'),
+  config
+);
+}
 
