@@ -7,9 +7,9 @@ body {
 #circuito {
   border: 2px solid green;
   height: 35vh;
-  background-image: url("../images/Rb.jpg");
   background-size: contain;
   background-repeat: no-repeat;
+  background-image: url("../images/Rb.jpg");
 }
 
 form {

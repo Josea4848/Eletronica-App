@@ -36,6 +36,7 @@ let r_emissor = document.getElementById("r_emissor");
 let tensao;
 //imagem
 let circuit_image = document.getElementById("circuito");
+var myChart;
 
 //Saidas
 let ib_current = document.getElementById("base");
@@ -74,7 +75,7 @@ res_option.addEventListener("change", () => {
     saida_r.hidden = false;
     saida_r1.hidden = true;
     saida_r2.hidden = true;
-    circuit_image.style.backgroundImage =  'url("../images/Rb.jpg")';
+    circuit_image.style.backgroundImage =  'url("https://raw.githubusercontent.com/Josea4848/Eletronica-App/master/images/Rb.jpg")';
   } 
   //resistor no emissor
   else if (res_option.value == "emissor") {
@@ -86,7 +87,7 @@ res_option.addEventListener("change", () => {
     saida_r.hidden = true;
     saida_r1.hidden = true;
     saida_r2.hidden = true;
-    circuit_image.style.backgroundImage =  'url("../images/remissor.jpg")';
+    circuit_image.style.backgroundImage = 'url("https://raw.githubusercontent.com/Josea4848/Eletronica-App/master/images/remissor.jpg")';
   } 
   //resistor na base e no emissor 
   else {
@@ -98,7 +99,7 @@ res_option.addEventListener("change", () => {
     saida_r.hidden = true;
     saida_r1.hidden = false;
     saida_r2.hidden = false;
-    circuit_image.style.backgroundImage =  'url("../images/divisor.jpg")';
+    circuit_image.style.backgroundImage =  'url("https://raw.githubusercontent.com/Josea4848/Eletronica-App/master/images/divisor.jpg")';
   }
 });
 
@@ -112,11 +113,10 @@ button.addEventListener("click", () => {
     ic_current.style.color = "white";
     tensao_ce.style.color = "white";
 
-    ib_current.textContent = "Ib: " + ib*Math.pow(10, 6).toFixed(2) + "µA";
-    ic_current.textContent = "Ic: " + ic*Math.pow(10, 3).toFixed(2) + "mA";
-    ie_current.textContent = "Ie: " + ie*Math.pow(10,3).toFixed(2) + "mA";
+    ib_current.textContent = "Ib: " + (ib*Math.pow(10, 6)).toFixed(2) + "µA";
+    ic_current.textContent = "Ic: " + (ic*Math.pow(10, 3)).toFixed(2) + "mA";
+    ie_current.textContent = "Ie: " + (ie*Math.pow(10,3)).toFixed(2) + "mA";
     tensao_ce.textContent = "Vce: " + tensao.toFixed(2) + "V";
-    alert(ic + " > " + v_receptor.value/r_receptor.value)
     if(ic > v_receptor.value/r_receptor.value) {
       ic_current.textContent += " (Saturação)";
       ic_current.style.color = "red";
@@ -135,8 +135,8 @@ button.addEventListener("click", () => {
     tensao_ce.style.color = "white";
 
     ib_current.textContent = "Ib: " + 0  + "µA";
-    ic_current.textContent = "Ic: " + ie*Math.pow(10, 3).toFixed(2) + "mA";
-    ie_current.textContent = "Ie: " + ie*Math.pow(10,3).toFixed(2) + "mA";
+    ic_current.textContent = "Ic: " + (ie*Math.pow(10, 3)).toFixed(2) + "mA";
+    ie_current.textContent = "Ie: " + (ie*Math.pow(10,3)).toFixed(2) + "mA";
     tensao_ce.textContent = "Vce: " + tensao.toFixed(2) + "V";
 
 
@@ -151,15 +151,14 @@ button.addEventListener("click", () => {
     let ie = calcula_Ib(parseFloat(r_emissor.value), parseFloat(v_base.value), parseFloat(aprox.value));
     
     let ic = ie;
-    alert(r_receptor.value + r_emissor.value + " "+ v_receptor.value + " " + ic);
     let tensao = calcula_Vce(parseFloat(v_receptor.value), parseFloat(Number( r_receptor.value) + Number(r_emissor.value)), ic); 
 
     ic_current.style.color = "white";
     tensao_ce.style.color = "white";
 
     ib_current.textContent = "Ib: " + 0 + "µA";
-    ic_current.textContent = "Ic: " + ic*Math.pow(10, 3).toFixed(2) + "mA";
-    ie_current.textContent = "Ie: " + ie*Math.pow(10,3).toFixed(2) + "mA";
+    ic_current.textContent = "Ic: " + (ic*Math.pow(10, 3)).toFixed(2) + "mA";
+    ie_current.textContent = "Ie: " + (ie*Math.pow(10,3)).toFixed(2) + "mA";
     tensao_ce.textContent = "Vce: " + tensao.toFixed(2) + "V";
 
 
@@ -223,10 +222,13 @@ const config = {
   }
 };
 
-// Criando o gráfico
-var myChart = new Chart(
-  document.getElementById('myChart'),
-  config
-);
+// Se o gráfico já foi criado, atualize-o
+if (myChart) {
+  myChart.data = data;
+  myChart.update();
+} else {
+  // Se o gráfico ainda não foi criado, crie-o
+  myChart = new Chart(document.getElementById("myChart"), config);
 }
+  }
 
