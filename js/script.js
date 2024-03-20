@@ -146,6 +146,7 @@ button.addEventListener("click", () => {
       ic_current.textContent += " (Saturação)";
     }
     
+    mostraGraph(tensao, ie);
   } 
   else {
     let ie = calcula_Ib(parseFloat(r_emissor.value), parseFloat(v_base.value), parseFloat(aprox.value));
@@ -167,7 +168,7 @@ button.addEventListener("click", () => {
       tensao_ce.style.color = "red";
       ic_current.textContent += " (Saturação)";
     }
-
+    mostraGraph(tensao, ic);
   }});
 
   
